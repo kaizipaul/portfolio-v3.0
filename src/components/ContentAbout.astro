@@ -1,5 +1,5 @@
 ---
-import { Code } from 'astro:components';
+import { Code } from "astro:components";
 
 const code = `interface Developer {
     name: string;
@@ -13,51 +13,44 @@ interface TechStack {
    frontend: string[];
 };
 
-type ContactType = 'github' | 'twitter' | 'linkedIn' | 'xing' | 'email';
+type ContactType = 'github' | 'twitter' | 'linkedIn' | 'email';
 
 const techStack: TechStack = {
     devOps: [
         'GitLab',
         'GitHub',
-        'Cloudflare',
         'Docker'
     ],
     frontend: [
-        'Angular',
+        'React',
         'JavaScript',
         'TypeScript',
         'TailwindCSS',
-        'PrimeNG',
         'Astro',
-        'Ionic',
-        'Stencil',
-        'Capacitor',
         'SCSS',
         'Markdown',
         'WordPress'
     ],
     backend: [
         'Supabase',
+        'Ruby-on-Rails'
         'Node.js',
         'Bun',
         'Deno',
         'PostgreSQL',
         'MySQL',
-        'S3 Storage',
-        'Resend'
     ]
 };
 
 // Developer profile
 const me: Developer = {
-    name: 'Dejan Vi.',
+    name: 'Paul Kaizirege',
     skills: [
         ...techStack.devOps,
         ...techStack.backend,
         ...techStack.frontend
     ],
     interests: [
-        'Open Source',
         'Security',
         'Privacy',
         'Performance',
@@ -70,15 +63,13 @@ const me: Developer = {
 const contact = (type: ContactType): string => {
     switch (type) {
         case 'github':
-            return 'https://github.com/devidevio';
+            return 'https://github.com/kaizipaul';
         case 'twitter':
-            return 'https://x.com/devidev_io';
+            return 'https://x.com/mykved';
         case 'linkedIn':
-            return 'https://www.linkedin.com/in/dejan-vi';
-        case 'xing':
-            return 'https://www.xing.com/profile/Dejan_Vintonjiv';
+            return 'https://www.linkedin.com/in/kaizipaul';
         case 'email':
-            return 'hi@devidev.io';
+            return 'paulkaizirege@gmail.com';
         default:
             return 'Send fax.';
     }
@@ -87,33 +78,32 @@ const contact = (type: ContactType): string => {
 `;
 ---
 
-<Code
-    code={code}
-    lang="js"
-    wrap={true}
-/>
+<Code code={code} lang="js" wrap={true} />
 
 <style is:global>
+  /* Custom styling for code block line numbers */
+  pre.astro-code {
+    @apply bg-transparent !important;
+  }
 
-    /* Custom styling for code block line numbers */
-    pre.astro-code {
-        @apply bg-transparent !important;
-    }
+  pre.astro-code code {
+    @apply block;
+    counter-reset: step;
+    counter-increment: step 0;
+  }
 
-    pre.astro-code code {
-        @apply block;
-        counter-reset: step;
-        counter-increment: step 0;
-    }
+  pre.astro-code code .line {
+    @apply relative;
+  }
 
-    pre.astro-code code .line {
-        @apply relative;
-    }
+  pre.astro-code code .line::before {
+    content: counter(step);
+    counter-increment: step;
+    @apply text-gray-600 pr-2;
+  }
 
-    pre.astro-code code .line::before {
-        content: counter(step);
-        counter-increment: step;
-        @apply text-gray-600 pr-2;
-    }
-
+  code {
+    font-family: "Jetbrains Mono", monospace;
+    font-size: 0.85rem;
+  }
 </style>

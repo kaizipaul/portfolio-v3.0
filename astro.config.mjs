@@ -3,8 +3,23 @@ import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
 import compress from 'astro-compress';
 import sitemap from '@astrojs/sitemap';
+import remarkToc from 'remark-toc';
+import { rehypeAccessibleEmojis } from 'rehype-accessible-emojis';
+import rehypeSlug from 'rehype-slug';
+import rehypeAutolinkHeadings from 'rehype-autolink-headings';
+
+
 
 export default defineConfig({
+
+    markdown: {
+        remarkPlugins: [ [remarkToc, { heading: "contents", maxDepth: 3 } ] ],
+        rehypePlugins: [rehypeSlug, [rehypeAutolinkHeadings, { behavior: 'append' }]],
+        gfm: true,
+        smartypants: true,
+      },
+
+
     output: 'static',
     trailingSlash: 'always',
     site: 'https://devidev.io',
@@ -13,6 +28,7 @@ export default defineConfig({
     prefetch: false,
 
     integrations: [
+
         tailwind(),
         sitemap(),
         compress({
