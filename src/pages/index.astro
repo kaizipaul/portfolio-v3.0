@@ -7,16 +7,18 @@ import Contact from "../components/Contact.astro";
 import ContentLink from "../components/ContentLink.astro";
 import ContentCode from "../components/ContentAbout.astro";
 import ContentProjects from "../components/ContentProjects.astro";
+import ContentSkills from "../components/ContentSkills.astro";
+import ContentExperience from "../components/ContentExperience.astro";
 ---
 
 <Layout>
   <!-- Start: Main Wrapper -->
   <main
-    class="flex flex-col md:flex-row w-full max-w-full md:max-w-7xl border border-gray-600 rounded-2xl overflow-hidden shadow-2xl relative bg-black mb-12 md:mb-4"
+    class="flex flex-col md:flex-row w-full max-w-full md:max-w-7xl border border-gray-200 dark:border-gray-600 rounded-2xl overflow-hidden shadow-2xl relative bg-white dark:bg-black mb-12 md:mb-4"
   >
     <!-- Start: Left / upper card -->
     <div
-      class="p-8 md:p-6 flex flex-col justify-between w-full md:w-2/5 border-b md:border-b-0 md:border-r border-gray-600"
+      class="p-8 md:p-6 flex flex-col justify-between w-full md:w-2/5 border-b md:border-b-0 md:border-r border-gray-200 dark:border-gray-600"
     >
       <Profile />
 
@@ -27,7 +29,7 @@ import ContentProjects from "../components/ContentProjects.astro";
     <!-- Start: Right / lower card (yes 4/5 instead of 3/5) -->
     <div class="w-full md:w-4/5 p-0">
       <!-- Start: Inner wrapper -->
-      <div class="min-h-full h-[90vh] flex flex-col overflow-y-scroll">
+      <div class="min-h-full flex flex-col md:h-[90vh] md:overflow-y-scroll">
         <!-- Use hidden radio buttons to control the tabs -->
         <div class="tab-controls">
           <input type="radio" id="tab1" name="tabs" class="tab-radio" checked />
@@ -36,27 +38,64 @@ import ContentProjects from "../components/ContentProjects.astro";
 
           <input type="radio" id="tab3" name="tabs" class="tab-radio" />
 
-          <!-- Start: Tab bar -->
-          <div class="flex bg-black border-b border-gray-600 sticky top-0 z-10">
-            <ContentLink contentId="tab1" contentName="about.ts" />
+          <input type="radio" id="tab4" name="tabs" class="tab-radio" />
 
-            <ContentLink contentId="tab2" contentName="projects.md" />
+          <!-- Start: Tab bar -->
+          <div class="flex bg-white dark:bg-black border-b border-gray-200 dark:border-gray-600 sticky top-0 z-10">
+            <div class="flex flex-1 overflow-x-auto [&::-webkit-scrollbar]:hidden">
+              <ContentLink contentId="tab1" contentName="projects.md" />
+
+              <ContentLink contentId="tab2" contentName="about.ts" />
+
+              <ContentLink contentId="tab3" contentName="skills.json" />
+
+              <ContentLink contentId="tab4" contentName="experience.md" />
+            </div>
+
+            <!-- Theme toggle -->
+            <button
+              id="theme-toggle"
+              class="ml-auto mr-2 flex items-center justify-center w-7 h-7 my-auto rounded-md text-gray-400 hover:text-primary dark:hover:text-primary transition-colors duration-150"
+              title="Toggle theme"
+              aria-label="Toggle light/dark mode"
+            >
+              <!-- Sun: shown in dark mode — click to go light -->
+              <svg id="icon-sun" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden dark:block">
+                <circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+              </svg>
+              <!-- Moon: shown in light mode — click to go dark -->
+              <svg id="icon-moon" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="block dark:hidden">
+                <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+              </svg>
+            </button>
           </div>
           <!-- End: Tab bar -->
 
           <!-- Start: Tab content -->
-          <div class="p-6 flex-grow overflow-y-auto bg-black">
-            <!-- Start: About content -->
+          <div class="p-6 flex-grow overflow-y-auto bg-white dark:bg-black">
+            <!-- Start: Projects content -->
             <div id="content1" class="tab-content">
+              <ContentProjects />
+            </div>
+            <!-- End: Projects content -->
+
+            <!-- Start: About content -->
+            <div id="content2" class="tab-content">
               <ContentCode />
             </div>
             <!-- End: About content -->
 
-            <!-- Start: Projects content -->
-            <div id="content2" class="tab-content">
-              <ContentProjects />
+            <!-- Start: Skills content -->
+            <div id="content3" class="tab-content">
+              <ContentSkills />
             </div>
-            <!-- End: Projects content -->
+            <!-- End: Skills content -->
+
+            <!-- Start: Experience content -->
+            <div id="content4" class="tab-content">
+              <ContentExperience />
+            </div>
+            <!-- End: Experience content -->
           </div>
           <!-- End: Tab content -->
         </div>
@@ -93,7 +132,7 @@ import ContentProjects from "../components/ContentProjects.astro";
     @apply block opacity-100;
   }
 
-  #tab1:checked ~ .flex .tab-link:nth-child(1) {
+  #tab1:checked ~ .flex [for="tab1"] {
     @apply border-b-2 border-b-primary;
   }
 
@@ -102,7 +141,32 @@ import ContentProjects from "../components/ContentProjects.astro";
     @apply block opacity-100;
   }
 
-  #tab2:checked ~ .flex .tab-link:nth-child(2) {
+  #tab2:checked ~ .flex [for="tab2"] {
+    @apply border-b-2 border-b-primary;
+  }
+
+  /* When tab3 is checked, show content3 and highlight its tab */
+  #tab3:checked ~ * #content3 {
+    @apply block opacity-100;
+  }
+
+  #tab3:checked ~ .flex [for="tab3"] {
+    @apply border-b-2 border-b-primary;
+  }
+
+  /* When tab4 is checked, show content4 and highlight its tab */
+  #tab4:checked ~ * #content4 {
+    @apply block opacity-100;
+  }
+
+  #tab4:checked ~ .flex [for="tab4"] {
     @apply border-b-2 border-b-primary;
   }
 </style>
+
+<script>
+  document.getElementById('theme-toggle')?.addEventListener('click', () => {
+    const isDark = document.documentElement.classList.toggle('dark');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+  });
+</script>

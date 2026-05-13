@@ -1,30 +1,154 @@
 ---
-import Socials from './Socials.astro';
+const socials = [
+    {
+        label: "github",
+        url: "github.com/kaizipaul",
+        href: "https://github.com/kaizipaul",
+        icon: `<svg fill="none" height="14" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="14" xmlns="http://www.w3.org/2000/svg"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>`,
+    },
+    {
+        label: "linkedin",
+        url: "linkedin.com/in/kaizipaul",
+        href: "https://www.linkedin.com/in/kaizipaul",
+        icon: `<svg fill="none" height="14" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="14" xmlns="http://www.w3.org/2000/svg"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect height="12" width="4" x="2" y="9"></rect><circle cx="4" cy="4" r="2"></circle></svg>`,
+    },
+    {
+        label: "email",
+        url: "paulkaizirege@gmail.com",
+        href: "mailto:paulkaizirege@gmail.com",
+        icon: `<svg fill="none" height="14" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="14" xmlns="http://www.w3.org/2000/svg"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>`,
+    },
+];
 ---
 
 <div>
 
     <!-- Start: Terminal -->
-    <div class="mt-6 bg-black rounded-lg p-4 border border-gray-600 text-xs">
+    <div class="mt-6 bg-gray-50 dark:bg-black rounded-lg p-4 border border-gray-200 dark:border-gray-600 text-xs">
 
         <div class="flex items-center mb-2">
             <span class="text-primary mr-2">$</span>
-            <span class="text-gray-100">npx connect</span>
+            <span class="text-gray-800 dark:text-gray-100">npx connect</span>
         </div>
 
-        <div class="mt-2 text-gray-400">
-            Initializing...
-            <br />
-            Ready to connect.
-            <br />
-            Waiting for contact request...
+        <div class="mt-2 text-gray-500 dark:text-gray-400">
+            <div id="terminal-line-1" class="terminal-line flex items-center gap-1">
+                <span id="terminal-spinner">⠋</span>
+                <span>Initializing...</span>
+            </div>
+            <div id="terminal-line-2" class="terminal-line">Ready to connect.</div>
+
+            <div id="terminal-socials" class="terminal-line mt-2 flex flex-col gap-1">
+                {socials.map((s) => (
+                    <a
+                        href={s.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="terminal-social-row flex items-center gap-2 group"
+                    >
+                        <span class="text-primary">→</span>
+                        <span class="text-gray-400 dark:text-gray-500 flex-shrink-0" set:html={s.icon} />
+                        <span class="w-16 text-gray-600 dark:text-gray-400 group-hover:text-primary transition-colors duration-150">{s.label}</span>
+                        <span class="text-gray-400 dark:text-gray-500 group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors duration-150">{s.url}</span>
+                    </a>
+                ))}
+            </div>
+
+            <div id="terminal-line-3" class="terminal-line flex items-center gap-1 mt-2">
+                <span id="terminal-status">Waiting for contact request...</span><span class="terminal-cursor">█</span>
+            </div>
         </div>
 
     </div>
     <!-- End: Terminal -->
 
-    <!-- Start: Social Links -->
-    <Socials />
-    <!-- End: Social Links -->
-
 </div>
+
+<style>
+  .terminal-line {
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  .terminal-line.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  #terminal-status {
+    transition: opacity 0.3s ease;
+  }
+
+  @keyframes terminal-blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0; }
+  }
+
+  .terminal-cursor {
+    color: #F43F5E;
+    animation: terminal-blink 1s step-start infinite;
+  }
+</style>
+
+<script>
+  const spinnerFrames = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
+  const cycleMessages = [
+    "Waiting for contact request...",
+    "Listening on port 443...",
+    "Uptime: 99.9%",
+    "All systems operational.",
+    "Monitoring connections...",
+  ];
+
+  const line1 = document.getElementById('terminal-line-1');
+  const line2 = document.getElementById('terminal-line-2');
+  const line3 = document.getElementById('terminal-line-3');
+  const spinnerEl = document.getElementById('terminal-spinner');
+  const statusEl = document.getElementById('terminal-status');
+
+  let spinnerIndex = 0;
+  let spinnerInterval: ReturnType<typeof setInterval> | undefined;
+
+  // Step 1 (t=300ms): Show "⠋ Initializing..." and start spinner
+  setTimeout(() => {
+    line1?.classList.add('visible');
+    spinnerInterval = setInterval(() => {
+      spinnerIndex = (spinnerIndex + 1) % spinnerFrames.length;
+      if (spinnerEl) spinnerEl.textContent = spinnerFrames[spinnerIndex];
+    }, 80);
+  }, 300);
+
+  // Step 2 (t=1800ms): Resolve spinner to ✓
+  setTimeout(() => {
+    clearInterval(spinnerInterval);
+    if (spinnerEl) spinnerEl.textContent = '✓';
+  }, 1800);
+
+  // Step 3 (t=2100ms): Slide in "Ready to connect."
+  setTimeout(() => {
+    line2?.classList.add('visible');
+  }, 2100);
+
+  // Step 4 (t=2500ms): Slide in social links
+  const socialsEl = document.getElementById('terminal-socials');
+  setTimeout(() => {
+    socialsEl?.classList.add('visible');
+  }, 2500);
+
+  // Step 5 (t=3200ms): Slide in status line, then start cycling
+  setTimeout(() => {
+    line3?.classList.add('visible');
+
+    let cycleIndex = 0;
+    setInterval(() => {
+      if (!statusEl) return;
+      statusEl.style.opacity = '0';
+      setTimeout(() => {
+        cycleIndex = (cycleIndex + 1) % cycleMessages.length;
+        statusEl.textContent = cycleMessages[cycleIndex];
+        statusEl.style.opacity = '1';
+      }, 300);
+    }, 3000);
+  }, 3200);
+</script>

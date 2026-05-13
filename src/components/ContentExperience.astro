@@ -1,0 +1,198 @@
+---
+interface Entry {
+  role: string;
+  org: string;
+  location: string;
+  period: string;
+  current?: boolean;
+  tag: string;
+  bullets: string[];
+}
+
+const experience: Entry[] = [
+  {
+    role: "Operations Lead",
+    org: "Mtabe Innovations / Kinara Technologies",
+    location: "Dar-es-Salaam, Tanzania",
+    period: "Sep 2024 – Dec 2025",
+    tag: "work",
+    bullets: [
+      "Streamlined daily operations and removed workflow bottlenecks to improve team efficiency.",
+      "Led AI feature development aligned with user needs and product goals.",
+      "Worked across product, engineering, and marketing teams to prioritize and execute initiatives.",
+      "Provided insights from operational data to improve platform performance.",
+      "Managed vendor contracts to support company objectives.",
+    ],
+  },
+  {
+    role: "Full-Stack Developer",
+    org: "Freelancer",
+    location: "Remote",
+    period: "Jun 2023 – Jul 2024",
+    tag: "contract",
+    bullets: [
+      "Built responsive websites and full-stack web apps using React, Next.js, Strapi CMS, and Supabase.",
+      "Delivered 2 client projects involving dynamic content delivery and user authentication.",
+    ],
+  },
+  {
+    role: "Mentor",
+    org: "Microverse",
+    location: "Remote",
+    period: "Dec 2022 – Jun 2023",
+    tag: "volunteer",
+    bullets: [
+      "Mentored 10+ students on programming, communication, and remote collaboration.",
+      "Facilitated weekly pair programming sessions.",
+      "Supported student growth through one-on-one feedback and problem-solving.",
+    ],
+  },
+  {
+    role: "IT Support Technician",
+    org: "Computer Center Tanzania Ltd",
+    location: "Dar-es-Salaam",
+    period: "Jul 2017 – Jul 2019",
+    tag: "work",
+    bullets: [
+      "Provided technical support to over 50 end-users monthly.",
+      "Installed and maintained IT infrastructure for 10+ client offices.",
+      "Performed troubleshooting and hardware support for local networks and peripherals.",
+    ],
+  },
+];
+
+const education: Entry[] = [
+  {
+    role: "Bachelor's Degree, Information Security",
+    org: "Unique Academy",
+    location: "Dar-es-Salaam, Tanzania",
+    period: "Oct 2023 – Present",
+    current: true,
+    tag: "ongoing",
+    bullets: [],
+  },
+  {
+    role: "Full Stack Web Development Program",
+    org: "Microverse",
+    location: "Remote",
+    period: "Aug 2022 – Jun 2023",
+    tag: "completed",
+    bullets: [],
+  },
+  {
+    role: "Diploma, Electronics & Telecommunications Engineering",
+    org: "Dar-es-Salaam Institute of Technology",
+    location: "Dar-es-Salaam, Tanzania",
+    period: "Nov 2016 – Oct 2020",
+    tag: "completed",
+    bullets: [],
+  },
+];
+
+const tagColor: Record<string, string> = {
+  work:      "text-primary border-primary/40",
+  contract:  "text-primary border-primary/40",
+  volunteer: "text-gray-400 dark:text-gray-500 border-gray-300 dark:border-gray-600",
+  ongoing:   "text-emerald-500 border-emerald-500/40",
+  completed: "text-gray-400 dark:text-gray-500 border-gray-300 dark:border-gray-600",
+};
+---
+
+<div class="space-y-8">
+
+  <!-- Experience section -->
+  <div>
+    <div class="flex items-center gap-2 mb-5 text-[11px] font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500 select-none">
+      <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <rect width="20" height="14" x="2" y="7" rx="2" ry="2"/>
+        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+      </svg>
+      <span>Experience</span>
+      <span class="text-primary normal-case font-normal tracking-normal">— {experience.length} roles</span>
+    </div>
+
+    <div class="relative ml-1">
+      <div class="absolute left-0 top-0 bottom-0 w-px bg-gray-200 dark:bg-gray-700"></div>
+
+      {experience.map((entry, i) => (
+        <div class={`relative pl-6 ${i < experience.length - 1 ? 'pb-7' : ''}`}>
+          <!-- Timeline dot -->
+          <div class="absolute left-0 top-1.5 -translate-x-1/2 w-2.5 h-2.5 rounded-full border-2 border-primary bg-white dark:bg-black"></div>
+
+          <!-- Role + tag -->
+          <div class="flex flex-wrap items-center gap-2 mb-0.5">
+            <span class="text-sm font-semibold text-gray-800 dark:text-gray-100">{entry.role}</span>
+            <span class={`text-[10px] border rounded px-1.5 py-0.5 ${tagColor[entry.tag] ?? 'text-gray-400 border-gray-300'}`}>
+              {entry.tag}
+            </span>
+          </div>
+
+          <!-- Org · location · period -->
+          <div class="flex flex-wrap items-center gap-x-2 gap-y-0.5 mb-2.5 text-xs">
+            <span class="text-primary font-medium">{entry.org}</span>
+            <span class="text-gray-300 dark:text-gray-600">·</span>
+            <span class="text-gray-400 dark:text-gray-500">{entry.location}</span>
+            <span class="text-gray-300 dark:text-gray-600 hidden sm:inline">·</span>
+            <span class="text-gray-400 dark:text-gray-500 sm:ml-auto">{entry.period}</span>
+          </div>
+
+          <!-- Bullets -->
+          {entry.bullets.length > 0 && (
+            <ul class="space-y-1.5">
+              {entry.bullets.map((b) => (
+                <li class="flex gap-2 text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
+                  <span class="text-primary shrink-0 mt-px">›</span>
+                  <span>{b}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- Divider -->
+  <div class="border-t border-gray-200 dark:border-gray-700"></div>
+
+  <!-- Education section -->
+  <div>
+    <div class="flex items-center gap-2 mb-5 text-[11px] font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500 select-none">
+      <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+        <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+      </svg>
+      <span>Education</span>
+      <span class="text-primary normal-case font-normal tracking-normal">— {education.length} programs</span>
+    </div>
+
+    <div class="relative ml-1">
+      <div class="absolute left-0 top-0 bottom-0 w-px bg-gray-200 dark:bg-gray-700"></div>
+
+      {education.map((entry, i) => (
+        <div class={`relative pl-6 ${i < education.length - 1 ? 'pb-7' : ''}`}>
+          <!-- Timeline dot: hollow for completed, filled for ongoing -->
+          <div class={`absolute left-0 top-1.5 -translate-x-1/2 w-2.5 h-2.5 rounded-full border-2 ${entry.current ? 'border-emerald-500 bg-emerald-500' : 'border-gray-400 dark:border-gray-600 bg-white dark:bg-black'}`}></div>
+
+          <!-- Degree + tag -->
+          <div class="flex flex-wrap items-center gap-2 mb-0.5">
+            <span class="text-sm font-semibold text-gray-800 dark:text-gray-100">{entry.role}</span>
+            <span class={`text-[10px] border rounded px-1.5 py-0.5 ${tagColor[entry.tag] ?? 'text-gray-400 border-gray-300'}`}>
+              {entry.tag}
+            </span>
+          </div>
+
+          <!-- Org · location · period -->
+          <div class="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs">
+            <span class="text-primary font-medium">{entry.org}</span>
+            <span class="text-gray-300 dark:text-gray-600">·</span>
+            <span class="text-gray-400 dark:text-gray-500">{entry.location}</span>
+            <span class="text-gray-300 dark:text-gray-600 hidden sm:inline">·</span>
+            <span class="text-gray-400 dark:text-gray-500 sm:ml-auto">{entry.period}</span>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+</div>

@@ -8,6 +8,16 @@ const {
     contentId,
     contentName,
 } = Astro.props as Props;
+
+const ext = contentName.split('.').pop() ?? '';
+
+const iconMap: Record<string, string> = {
+    ts:   'file-code-2',
+    md:   'file-text',
+    json: 'file-json',
+};
+
+const iconName = iconMap[ext] ?? 'file';
 ---
 
 <label
@@ -15,16 +25,20 @@ const {
     class={[
         "tab-link",
 
-        "flex items-center gap-2 py-2 px-4 text-xs cursor-pointer",
+        "flex items-center gap-2 py-2 px-3 sm:px-4 text-xs cursor-pointer shrink-0",
 
-        "bg-black",
-        "text-gray-100",
+        "text-gray-600 dark:text-gray-100",
         "hover:text-primary",
 
         "!border-r",
-        "!border-r-gray-600"
+        "!border-r-gray-200 dark:!border-r-gray-600"
     ].join(" ")}
 >
-    <svg fill=none height=16 stroke=currentColor stroke-linecap=round stroke-linejoin=round stroke-width=2 viewBox="0 0 24 24"width=16 xmlns=http://www.w3.org/2000/svg><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+    <i data-lucide={iconName} class="w-4 h-4 shrink-0"></i>
     <h2>{contentName}</h2>
 </label>
+
+<script>
+    import { createIcons, FileCode2, FileText, FileJson, File } from 'lucide';
+    createIcons({ icons: { FileCode2, FileText, FileJson, File } });
+</script>

@@ -1,73 +1,394 @@
 ---
 interface Project {
- name: string;
- description: string;
- link: {
-  url?: string;
-  target?: string;
-  title?: string;
-  buttonLabel?: string;
- };
+  name: string;
+  description: string;
+  tags: string[];
+  featured?: boolean;
+  links: { github?: string; live?: string };
 }
 
 const projects: Project[] = [
- {
-  name: "Portfolio Site",
-  description:
-   "Built with one of NextJS portfolio templates, I aimed to create a minimalistic portfolio site using the popular framework with markdown file plugins (mdx)",
-  link: {
-   url: "https://github.com/kaizipaul/portfolio-v2.0",
+  {
+    name: "portfolio-v3.0",
+    description: "Minimal developer portfolio built with Astro and TailwindCSS. Features a VS Code-inspired tab interface, animated terminal, and dark/light mode toggle.",
+    tags: ["Astro", "TypeScript", "TailwindCSS"],
+    featured: true,
+    links: { github: "https://github.com/kaizipaul/portfolio-v3.0", live: "https://devidev.io" },
   },
- },
- {
-  name: "Blog App",
-  description:
-   "Blog App was built as a way to learn how to create a full-stack web application. The features include a login page, account creation, and post creation.",
-  link: {
-   url: "https://github.com/kaizipaul/blog-app",
+  {
+    name: "portfolio-v2.0",
+    description: "Minimalistic portfolio site built on a NextJS template with MDX plugin support for markdown-driven content.",
+    tags: ["Next.js", "TypeScript", "MDX"],
+    links: { github: "https://github.com/kaizipaul/portfolio-v2.0" },
   },
- },
- {
-  name: "Budget App",
-  description:
-   "Built for mobile, Budget App is a Rails Web App designed to track a user's budget by entering their expenditure and adding them to their list. This app utilizes the knowledge of Full-Stack Development and Rails MVC (Model, View and Controller) architecture.",
-  link: {
-   url: "https://github.com/kaizipaul/budget-app",
+  {
+    name: "blog-app",
+    description: "Full-stack blog application with authentication, account creation, and post management.",
+    tags: ["React", "Node.js", "PostgreSQL"],
+    featured: true,
+    links: { github: "https://github.com/kaizipaul/blog-app" },
   },
- },
+  {
+    name: "budget-app",
+    description: "Mobile-first Rails web app for tracking personal budgets — users log expenditures and categorise them into lists. Built on the MVC architecture.",
+    tags: ["Ruby on Rails", "PostgreSQL"],
+    links: { github: "https://github.com/kaizipaul/budget-app" },
+  },
 ];
+
+const featured = projects.filter((p) => p.featured);
+const allTags  = [...new Set(projects.flatMap((p) => p.tags))].sort();
 ---
 
-<div>
- <!-- <h2 class="text-2xl font-bold text-white mb-4">Latest Projects</h2> -->
+<div id="projects-explorer">
 
- <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-  {
-   projects.map((project) => (
-    <div class="flex flex-col justify-center items-start border border-gray-700 rounded-lg p-4 bg-black">
-     <h3 class="text-xl font-semibold text-white mb-2">{project.name}</h3>
-
-     <p class="text-gray-400">{project.description}</p>
-
-     {project.link?.url ? (
-      <a
-       href={project.link.url}
-       title={project.link.title || project.name}
-       target={project.link.target || "_blank"}
-       class="
-                                w-full px-4 py-2.5 mt-4 text-center
-
-                                border border-gray-600 rounded-lg
-
-                                hover:text-primary
-                                hover:border-primary
-                            "
-      >
-       {project.link.buttonLabel || "Open GitHub Repo"}
-      </a>
-     ) : null}
+  <!-- Pinned / featured -->
+  <div class="mb-6 pb-6 border-b border-gray-200 dark:border-gray-700">
+    <div class="flex items-center gap-1.5 mb-3 text-[11px] font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500 select-none">
+      <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+      </svg>
+      <span>Pinned</span>
+      <span class="text-primary normal-case font-normal tracking-normal">— {featured.length} repositories</span>
     </div>
-   ))
-  }
- </div>
+
+    <div class="flex flex-col gap-3">
+      {featured.map((project) => (
+        <div class="pl-3 border-l-2 border-primary/40 hover:border-primary transition-colors duration-150 group">
+          <!-- Name + status -->
+          <div class="flex items-center gap-2 mb-1.5">
+            <svg class="w-3.5 h-3.5 shrink-0 text-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10 12.5 8 15l2 2.5"/><path d="m14 12.5 2 2.5-2 2.5"/>
+              <path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+            </svg>
+            <span class="text-sm font-semibold text-gray-800 dark:text-gray-100 group-hover:text-primary transition-colors duration-150">
+              {project.name}
+            </span>
+            <span class="ml-auto text-[11px] shrink-0">
+              {project.links.live
+                ? <span class="text-emerald-500">● live</span>
+                : project.links.github
+                ? <span class="text-gray-400 dark:text-gray-500">⬡ public</span>
+                : <span class="text-gray-300 dark:text-gray-600">⊘ private</span>}
+            </span>
+          </div>
+
+          <!-- Description -->
+          <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mb-2">{project.description}</p>
+
+          <!-- GitHub meta: skeleton → data -->
+          <div class="gh-meta mb-2" data-repo={project.name}>
+            <div class="flex items-center gap-3 text-[11px]">
+              <span class="h-2.5 w-20 rounded bg-gray-200 dark:bg-gray-700 animate-pulse"></span>
+              <span class="h-2.5 w-8 rounded bg-gray-200 dark:bg-gray-700 animate-pulse"></span>
+              <span class="h-2.5 w-16 rounded bg-gray-200 dark:bg-gray-700 animate-pulse ml-auto"></span>
+            </div>
+          </div>
+
+          <!-- Tags + links -->
+          <div class="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+            <div class="flex flex-wrap gap-1.5">
+              {project.tags.map((tag) => (
+                <span class="text-[11px] border border-gray-200 dark:border-gray-700 rounded px-2 py-0.5 text-gray-500 dark:text-gray-400">{tag}</span>
+              ))}
+            </div>
+            <div class="flex gap-2 ml-auto">
+              {project.links.github && (
+                <a href={project.links.github} target="_blank" rel="noopener noreferrer"
+                  class="flex items-center gap-1.5 text-[11px] px-2.5 py-1 border border-gray-200 dark:border-gray-600 rounded hover:border-primary hover:text-primary transition-colors duration-150">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/>
+                    <path d="M9 18c-4.51 2-5-2-7-2"/>
+                  </svg>
+                  GitHub
+                </a>
+              )}
+              {project.links.live && (
+                <a href={project.links.live} target="_blank" rel="noopener noreferrer"
+                  class="flex items-center gap-1.5 text-[11px] px-2.5 py-1 border border-gray-200 dark:border-gray-600 rounded hover:border-primary hover:text-primary transition-colors duration-150">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                  </svg>
+                  Live
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- Filter chips -->
+  <div class="flex flex-wrap gap-2 mb-5 pb-4 border-b border-gray-200 dark:border-gray-700">
+    <button class="filter-btn active" data-filter="all">All</button>
+    {allTags.map((tag) => (
+      <button class="filter-btn" data-filter={tag}>{tag}</button>
+    ))}
+  </div>
+
+  <!-- Explorer header -->
+  <div class="flex items-center gap-1.5 px-1 mb-2 text-[11px] font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500 select-none">
+    <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m9 18 6-6-6-6"/>
+    </svg>
+    <span>Explorer</span>
+    <span class="text-primary normal-case font-normal tracking-normal">— projects.md</span>
+  </div>
+
+  <!-- Project entries -->
+  <div id="project-list" class="flex flex-col gap-0.5">
+    {projects.map((project, i) => (
+      <div class="project-entry" data-tags={JSON.stringify(project.tags)}>
+
+        <!-- Collapsed row -->
+        <button
+          class="project-row w-full flex items-center gap-2 px-2 py-1.5 rounded text-left hover:bg-gray-100 dark:hover:bg-gray-800/50 transition-colors duration-100 group"
+          data-index={i} aria-expanded="false"
+        >
+          <svg class="chevron w-3 h-3 shrink-0 text-gray-400 transition-transform duration-150" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m9 18 6-6-6-6"/>
+          </svg>
+          <svg class="w-3.5 h-3.5 shrink-0 text-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10 12.5 8 15l2 2.5"/><path d="m14 12.5 2 2.5-2 2.5"/>
+            <path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+          </svg>
+
+          <span class="text-sm font-medium text-gray-800 dark:text-gray-200 group-hover:text-gray-900 dark:group-hover:text-white">
+            {project.name}
+          </span>
+
+          <!-- Language dot: populated by JS -->
+          <span class="gh-lang-dot" data-repo={project.name}></span>
+
+          <!-- Tag preview -->
+          <span class="hidden sm:flex items-center gap-2 ml-1">
+            {project.tags.slice(0, 2).map((tag) => (
+              <span class="text-[11px] text-gray-400 dark:text-gray-500">{tag}</span>
+            ))}
+            {project.tags.length > 2 && (
+              <span class="text-[11px] text-gray-300 dark:text-gray-600">+{project.tags.length - 2}</span>
+            )}
+          </span>
+
+          <!-- Stars + status -->
+          <span class="ml-auto flex items-center gap-2 text-[11px] shrink-0">
+            <span class="gh-stars" data-repo={project.name}></span>
+            {project.links.live
+              ? <span class="text-emerald-500">● live</span>
+              : project.links.github
+              ? <span class="text-gray-400 dark:text-gray-500">⬡ public</span>
+              : <span class="text-gray-300 dark:text-gray-600">⊘ private</span>}
+          </span>
+        </button>
+
+        <!-- Expanded detail -->
+        <div class="project-detail hidden ml-4 pl-3 border-l border-gray-200 dark:border-gray-700 py-3 pr-1">
+          <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-3">{project.description}</p>
+
+          <!-- GitHub meta: skeleton → data -->
+          <div class="gh-meta mb-3" data-repo={project.name}>
+            <div class="flex items-center gap-3 text-[11px]">
+              <span class="h-2.5 w-20 rounded bg-gray-200 dark:bg-gray-700 animate-pulse"></span>
+              <span class="h-2.5 w-8 rounded bg-gray-200 dark:bg-gray-700 animate-pulse"></span>
+              <span class="h-2.5 w-16 rounded bg-gray-200 dark:bg-gray-700 animate-pulse ml-auto"></span>
+            </div>
+          </div>
+
+          <!-- Tags -->
+          <div class="flex flex-wrap gap-1.5 mb-3">
+            {project.tags.map((tag) => (
+              <span class="text-[11px] border border-gray-200 dark:border-gray-700 rounded px-2 py-0.5 text-gray-500 dark:text-gray-400">{tag}</span>
+            ))}
+          </div>
+
+          <!-- Links -->
+          <div class="flex flex-wrap gap-2">
+            {project.links.github && (
+              <a href={project.links.github} target="_blank" rel="noopener noreferrer"
+                class="flex items-center gap-1.5 text-xs px-3 py-1.5 border border-gray-200 dark:border-gray-600 rounded hover:border-primary hover:text-primary transition-colors duration-150">
+                <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/>
+                  <path d="M9 18c-4.51 2-5-2-7-2"/>
+                </svg>
+                GitHub
+              </a>
+            )}
+            {project.links.live && (
+              <a href={project.links.live} target="_blank" rel="noopener noreferrer"
+                class="flex items-center gap-1.5 text-xs px-3 py-1.5 border border-gray-200 dark:border-gray-600 rounded hover:border-primary hover:text-primary transition-colors duration-150">
+                <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                </svg>
+                Live
+              </a>
+            )}
+            {!project.links.github && !project.links.live && (
+              <span class="flex items-center gap-1.5 text-xs text-gray-400 dark:text-gray-500">
+                <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+                Private repository
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <p id="no-results" class="hidden text-sm text-gray-400 dark:text-gray-500 px-2 py-4">
+    No projects matching this filter.
+  </p>
 </div>
+
+<style>
+  .filter-btn {
+    @apply text-xs px-2.5 py-1 rounded border border-gray-200 dark:border-gray-700
+           text-gray-500 dark:text-gray-400
+           hover:border-primary hover:text-primary
+           transition-colors duration-150;
+  }
+  .filter-btn.active {
+    @apply border-primary text-primary;
+  }
+</style>
+
+<script>
+  // ── Filtering & expand/collapse (unchanged) ──────────────────────────────
+  const filterBtns = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
+  const entries    = document.querySelectorAll<HTMLElement>('.project-entry');
+  const noResults  = document.getElementById('no-results');
+
+  filterBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach((b) => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter ?? 'all';
+      let visible = 0;
+      entries.forEach((entry) => {
+        const tags: string[] = JSON.parse(entry.dataset.tags ?? '[]');
+        const show = filter === 'all' || tags.includes(filter);
+        entry.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      noResults?.classList.toggle('hidden', visible > 0);
+    });
+  });
+
+  document.querySelectorAll<HTMLButtonElement>('.project-row').forEach((row) => {
+    row.addEventListener('click', () => {
+      const entry   = row.closest<HTMLElement>('.project-entry');
+      const detail  = entry?.querySelector<HTMLElement>('.project-detail');
+      const chevron = row.querySelector<SVGElement>('.chevron');
+      if (!detail) return;
+      const isOpen = !detail.classList.contains('hidden');
+      detail.classList.toggle('hidden', isOpen);
+      chevron?.classList.toggle('rotate-90', !isOpen);
+      row.setAttribute('aria-expanded', String(!isOpen));
+    });
+  });
+
+  // ── GitHub live data ──────────────────────────────────────────────────────
+  const LANG_COLORS: Record<string, string> = {
+    TypeScript: '#3178C6', JavaScript: '#F1E05A', Ruby: '#CC342D',
+    Python: '#3776AB', CSS: '#563D7C', HTML: '#E34F26',
+    SCSS: '#C6538C', Shell: '#89E051', Astro: '#FF5A03', Vue: '#41B883',
+  };
+
+  function relativeTime(iso: string): string {
+    const days = Math.floor((Date.now() - new Date(iso).getTime()) / 86400000);
+    if (days < 1)   return 'today';
+    if (days < 7)   return `${days}d ago`;
+    if (days < 30)  return `${Math.floor(days / 7)}w ago`;
+    if (days < 365) return `${Math.floor(days / 30)}mo ago`;
+    return `${Math.floor(days / 365)}y ago`;
+  }
+
+  function metaHtml(repo: { language: string | null; stargazers_count: number; forks_count: number; pushed_at: string }): string {
+    const langColor = repo.language ? (LANG_COLORS[repo.language] ?? '#6A737D') : null;
+    const parts: string[] = [];
+
+    if (langColor && repo.language) {
+      parts.push(`<span class="flex items-center gap-1">
+        <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background:${langColor}"></span>
+        ${repo.language}
+      </span>`);
+    }
+    if (repo.stargazers_count > 0) {
+      parts.push(`<span class="flex items-center gap-1">
+        <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor" style="color:#F43F5E;opacity:.7">
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+        </svg>
+        ${repo.stargazers_count}
+      </span>`);
+    }
+    if (repo.forks_count > 0) {
+      parts.push(`<span class="flex items-center gap-1">
+        <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/>
+          <path d="M18 9v1a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V9"/><path d="M12 12v3"/>
+        </svg>
+        ${repo.forks_count}
+      </span>`);
+    }
+
+    return `<div class="flex items-center gap-3 text-[11px] text-gray-400 dark:text-gray-500">
+      ${parts.join('')}
+      <span class="ml-auto">updated ${relativeTime(repo.pushed_at)}</span>
+    </div>`;
+  }
+
+  async function loadProjectData() {
+    try {
+      const res = await fetch(
+        'https://api.github.com/users/kaizipaul/repos?per_page=100',
+        { headers: { Accept: 'application/vnd.github.v3+json' } }
+      );
+      if (!res.ok) { clearSkeletons(); return; }
+
+      const repos: { name: string; language: string | null; stargazers_count: number; forks_count: number; pushed_at: string }[] = await res.json();
+      const repoMap = new Map(repos.map((r) => [r.name, r]));
+
+      // Populate .gh-meta containers (pinned cards + expanded details)
+      document.querySelectorAll<HTMLElement>('.gh-meta').forEach((el) => {
+        const repo = repoMap.get(el.dataset.repo ?? '');
+        if (repo) {
+          el.innerHTML = metaHtml(repo);
+        } else {
+          el.remove();
+        }
+      });
+
+      // Populate language dots in collapsed rows
+      document.querySelectorAll<HTMLElement>('.gh-lang-dot').forEach((el) => {
+        const repo = repoMap.get(el.dataset.repo ?? '');
+        if (repo?.language) {
+          const color = LANG_COLORS[repo.language] ?? '#6A737D';
+          el.innerHTML = `<span class="w-2 h-2 rounded-full shrink-0 block" style="background:${color}"></span>`;
+        }
+      });
+
+      // Populate star counts in collapsed rows
+      document.querySelectorAll<HTMLElement>('.gh-stars').forEach((el) => {
+        const repo = repoMap.get(el.dataset.repo ?? '');
+        if (repo && repo.stargazers_count > 0) {
+          el.innerHTML = `<span class="flex items-center gap-0.5 text-gray-400 dark:text-gray-500">
+            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="currentColor" style="color:#F43F5E;opacity:.6">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+            ${repo.stargazers_count}
+          </span>`;
+        }
+      });
+    } catch {
+      clearSkeletons();
+    }
+  }
+
+  function clearSkeletons() {
+    document.querySelectorAll('.gh-meta').forEach((el) => el.remove());
+  }
+
+  loadProjectData();
+</script>

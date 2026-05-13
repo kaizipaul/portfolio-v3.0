@@ -1,5 +1,5 @@
 ---
-import { Code } from "astro:components";
+import { Prism } from "@astrojs/prism";
 
 const code = `interface Developer {
     name: string;
@@ -8,54 +8,72 @@ const code = `interface Developer {
 };
 
 interface TechStack {
+    languages: string[];
+    frontend: string[];
     devOps: string[];
     backend: string[];
-   frontend: string[];
+    database: string[];
+    testing: string[];
 };
 
-type ContactType = 'github' | 'twitter' | 'linkedIn' | 'email';
+type ContactType = 'github' | 'linkedIn' | 'email';
 
 const techStack: TechStack = {
-    devOps: [
-        'GitLab',
-        'GitHub',
-        'Docker'
+    languages: [
+        'JavaScript',
+        'TypeScript',
+        'Ruby',
+        'Python',
     ],
     frontend: [
         'React',
-        'JavaScript',
-        'TypeScript',
         'TailwindCSS',
         'Astro',
         'SCSS',
         'Markdown',
-        'WordPress'
+        'WordPress',
+    ],
+    devOps: [
+        'GitLab',
+        'GitHub',
+        'Docker',
     ],
     backend: [
-        'Supabase',
-        'Ruby-on-Rails'
         'Node.js',
         'Bun',
         'Deno',
+        'Ruby on Rails',
+        'Supabase',
+        'Django',
+    ],
+    database: [
         'PostgreSQL',
         'MySQL',
-    ]
+        'SQLite',
+    ],
+    testing: [
+        'Jest',
+        'Vitest',
+    ],
 };
 
 // Developer profile
 const me: Developer = {
     name: 'Paul Kaizirege',
     skills: [
+        ...techStack.languages,
+        ...techStack.frontend,
         ...techStack.devOps,
         ...techStack.backend,
-        ...techStack.frontend
+        ...techStack.database,
+        ...techStack.testing,
     ],
     interests: [
         'Security',
         'Privacy',
         'Performance',
         'Self-Hosting',
-        'Networking'
+        'Networking',
     ]
 };
 
@@ -74,36 +92,117 @@ const contact = (type: ContactType): string => {
             return 'Send fax.';
     }
 };
-
 `;
 ---
 
-<Code code={code} lang="js" wrap={true} />
+<Prism lang="typescript" code={code} />
 
 <style is:global>
-  /* Custom styling for code block line numbers */
-  pre.astro-code {
-    @apply bg-transparent !important;
-  }
+    pre[class*="language-"] {
+        background: transparent !important;
+        margin: 0;
+        padding: 0;
+        overflow-x: auto;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        font-family: "Jetbrains Mono", monospace;
+        font-size: 0.85rem;
+    }
 
-  pre.astro-code code {
-    @apply block;
-    counter-reset: step;
-    counter-increment: step 0;
-  }
+    code[class*="language-"] {
+        font-family: "Jetbrains Mono", monospace;
+        font-size: 0.85rem;
+        display: block;
+        counter-reset: step;
+        counter-increment: step 0;
+    }
 
-  pre.astro-code code .line {
-    @apply relative;
-  }
+    /* ── Light mode (github-light colors) ── */
+    code[class*="language-"] .token.keyword,
+    code[class*="language-"] .token.operator {
+        color: #d73a49;
+    }
+    code[class*="language-"] .token.string,
+    code[class*="language-"] .token.attr-value {
+        color: #032f62;
+    }
+    code[class*="language-"] .token.class-name,
+    code[class*="language-"] .token.builtin {
+        color: #6f42c1;
+    }
+    code[class*="language-"] .token.number,
+    code[class*="language-"] .token.boolean {
+        color: #005cc5;
+    }
+    code[class*="language-"] .token.comment {
+        color: #6a737d;
+        font-style: italic;
+    }
+    code[class*="language-"] .token.function {
+        color: #6f42c1;
+    }
+    code[class*="language-"] .token.punctuation {
+        color: #24292e;
+    }
+    code[class*="language-"] .token.parameter,
+    code[class*="language-"] .token.property-access {
+        color: #e36209;
+    }
 
-  pre.astro-code code .line::before {
-    content: counter(step);
-    counter-increment: step;
-    @apply text-gray-600 pr-2;
-  }
+    /* ── Dark mode (github-dark colors) ── */
+    html.dark code[class*="language-"] .token.keyword,
+    html.dark code[class*="language-"] .token.operator {
+        color: #f97583;
+    }
+    html.dark code[class*="language-"] .token.string,
+    html.dark code[class*="language-"] .token.attr-value {
+        color: #9ecbff;
+    }
+    html.dark code[class*="language-"] .token.class-name,
+    html.dark code[class*="language-"] .token.builtin {
+        color: #b392f0;
+    }
+    html.dark code[class*="language-"] .token.number,
+    html.dark code[class*="language-"] .token.boolean {
+        color: #79b8ff;
+    }
+    html.dark code[class*="language-"] .token.comment {
+        color: #6a737d;
+        font-style: italic;
+    }
+    html.dark code[class*="language-"] .token.function {
+        color: #b392f0;
+    }
+    html.dark code[class*="language-"] .token.punctuation {
+        color: #e1e4e8;
+    }
+    html.dark code[class*="language-"] .token.parameter,
+    html.dark code[class*="language-"] .token.property-access {
+        color: #ffab70;
+    }
 
-  code {
-    font-family: "Jetbrains Mono", monospace;
-    font-size: 0.85rem;
-  }
+    /* Default text color per mode */
+    code[class*="language-"] {
+        color: #24292e;
+    }
+    html.dark code[class*="language-"] {
+        color: #e1e4e8;
+    }
+
+    /* Blinking cursor on last line */
+    @keyframes blink {
+        0%,
+        100% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0;
+        }
+    }
+
+    pre[class*="language-"]::after {
+        content: "█";
+        color: #f43f5e;
+        animation: blink 1s step-start infinite;
+    }
 </style>

@@ -1,0 +1,149 @@
+---
+import {
+  siJavascript, siTypescript, siRuby, siPython,
+  siReact, siTailwindcss, siAstro, siSass, siMarkdown, siWordpress,
+  siNodedotjs, siBun, siDeno, siRubyonrails, siSupabase, siDjango,
+  siPostgresql, siMysql, siSqlite,
+  siGitlab, siGithub, siDocker,
+  siJest, siVitest,
+} from 'simple-icons';
+
+interface Skill {
+  name: string;
+  path: string;
+}
+
+interface SkillCategory {
+  label: string;
+  iconPath: string;
+  skills: Skill[];
+}
+
+const categories: SkillCategory[] = [
+  {
+    label: "Languages",
+    iconPath: `<path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/>`,
+    skills: [
+      { name: "JavaScript", path: siJavascript.path },
+      { name: "TypeScript", path: siTypescript.path },
+      { name: "Ruby",       path: siRuby.path },
+      { name: "Python",     path: siPython.path },
+    ],
+  },
+  {
+    label: "Frontend",
+    iconPath: `<rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18M9 21V9"/>`,
+    skills: [
+      { name: "React",       path: siReact.path },
+      { name: "TailwindCSS", path: siTailwindcss.path },
+      { name: "Astro",       path: siAstro.path },
+      { name: "SCSS",        path: siSass.path },
+      { name: "Markdown",    path: siMarkdown.path },
+      { name: "WordPress",   path: siWordpress.path },
+    ],
+  },
+  {
+    label: "DevOps",
+    iconPath: `<line x1="6" x2="6" y1="3" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/>`,
+    skills: [
+      { name: "GitLab", path: siGitlab.path },
+      { name: "GitHub", path: siGithub.path },
+      { name: "Docker", path: siDocker.path },
+    ],
+  },
+  {
+    label: "Backend",
+    iconPath: `<rect width="20" height="8" x="2" y="2" rx="2" ry="2"/><rect width="20" height="8" x="2" y="14" rx="2" ry="2"/><line x1="6" x2="6.01" y1="6" y2="6"/><line x1="6" x2="6.01" y1="18" y2="18"/>`,
+    skills: [
+      { name: "Node.js",       path: siNodedotjs.path },
+      { name: "Bun",           path: siBun.path },
+      { name: "Deno",          path: siDeno.path },
+      { name: "Ruby on Rails", path: siRubyonrails.path },
+      { name: "Supabase",      path: siSupabase.path },
+      { name: "Django",        path: siDjango.path },
+    ],
+  },
+  {
+    label: "Database",
+    iconPath: `<ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/>`,
+    skills: [
+      { name: "PostgreSQL", path: siPostgresql.path },
+      { name: "MySQL",      path: siMysql.path },
+      { name: "SQLite",     path: siSqlite.path },
+    ],
+  },
+  {
+    label: "Testing",
+    iconPath: `<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>`,
+    skills: [
+      { name: "Jest",   path: siJest.path },
+      { name: "Vitest", path: siVitest.path },
+    ],
+  },
+];
+
+const left  = [categories[0], categories[1], categories[2]];
+const right = [categories[3], categories[4], categories[5]];
+---
+
+<div class="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-gray-200 dark:divide-gray-700">
+
+  <div class="flex flex-col gap-7 pb-8 md:pb-0 md:pr-7">
+    {left.map((cat) => (
+      <div>
+        <div class="flex items-center gap-2 mb-3">
+          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary shrink-0" set:html={cat.iconPath} />
+          <span class="text-sm font-bold uppercase tracking-widest text-gray-800 dark:text-gray-100">
+            {cat.label}
+          </span>
+        </div>
+        <div class="flex flex-wrap gap-1.5">
+          {cat.skills.map((skill) => (
+            <span class="skill-badge">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" set:html={`<path d="${skill.path}"/>`} class="shrink-0 opacity-70" />
+              {skill.name}
+            </span>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <div class="flex flex-col gap-7 pt-8 md:pt-0 md:pl-7">
+    {right.map((cat) => (
+      <div>
+        <div class="flex items-center gap-2 mb-3">
+          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary shrink-0" set:html={cat.iconPath} />
+          <span class="text-sm font-bold uppercase tracking-widest text-gray-800 dark:text-gray-100">
+            {cat.label}
+          </span>
+        </div>
+        <div class="flex flex-wrap gap-1.5">
+          {cat.skills.map((skill) => (
+            <span class="skill-badge">
+              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor" set:html={`<path d="${skill.path}"/>`} class="shrink-0 opacity-70" />
+              {skill.name}
+            </span>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+
+</div>
+
+<style>
+  .skill-badge {
+    @apply inline-flex items-center gap-1.5
+           border border-gray-200 dark:border-gray-700
+           rounded px-2.5 py-1
+           text-xs text-gray-600 dark:text-gray-300
+           bg-gray-50 dark:bg-gray-900/40
+           hover:border-primary hover:text-primary
+           transition-colors duration-150 cursor-default select-none;
+  }
+
+  .skill-badge:hover svg {
+    @apply opacity-100;
+  }
+</style>
