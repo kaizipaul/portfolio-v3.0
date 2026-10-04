@@ -4,10 +4,49 @@ interface Project {
   description: string;
   tags: string[];
   featured?: boolean;
-  links: { github?: string; live?: string };
+  highlights?: string[];
+  status?: "in development" | "research"; // overrides the live/public/private badge
+  links: { github?: string; live?: string; paper?: string };
 }
 
 const projects: Project[] = [
+  {
+    name: "pii-encryption-framework",
+    description: "Information Security capstone research — protecting personal data in Tanzanian SaaS through end-to-end encryption, validated on a real multi-tenant platform (SRMS) as the case study.",
+    tags: ["Python", "Django", "Cryptography", "Security", "Research"],
+    featured: true,
+    status: "research",
+    highlights: [
+      "Field-level AES-256-GCM encryption with authenticated integrity.",
+      "Three-tier hierarchical key management (master → tenant → data keys).",
+      "Designed for regional data protection compliance.",
+      "Documented in a full APA-formatted academic paper.",
+    ],
+    links: {},
+  },
+  {
+    name: "srms-shuleis",
+    description: "Multi-tenant SaaS for managing student records across schools — multiple schools manage their student data in isolated tenants from a single deployment.",
+    tags: ["Django", "Next.js", "Multi-tenant"],
+    featured: true,
+    status: "in development",
+    highlights: [
+      "Multi-tenant architecture with per-school data isolation.",
+      "Built with a 6-agent AI dev workflow (Planner, Backend, Frontend, DevOps, Integration, Debug) with Playwright-based monitoring.",
+      "Structured pipeline: Capture → Define → Design → Build → Verify → Ship.",
+    ],
+    links: {},
+  },
+  {
+    name: "bolt-my-ass",
+    description: "Ridesharing platform connecting riders and drivers, designed as independently deployable microservices.",
+    tags: ["Fastify", "Node.js", "Microservices"],
+    status: "in development",
+    highlights: [
+      "Service-oriented design for scalability and fault isolation.",
+    ],
+    links: {},
+  },
   {
     name: "portfolio-v3.0",
     description: "Minimal developer portfolio built with Astro and TailwindCSS. Features a VS Code-inspired tab interface, animated terminal, and dark/light mode toggle.",
@@ -25,7 +64,6 @@ const projects: Project[] = [
     name: "blog-app",
     description: "Full-stack blog application with authentication, account creation, and post management.",
     tags: ["React", "Node.js", "PostgreSQL"],
-    featured: true,
     links: { github: "https://github.com/kaizipaul/blog-app" },
   },
   {
@@ -38,6 +76,14 @@ const projects: Project[] = [
 
 const featured = projects.filter((p) => p.featured);
 const allTags  = [...new Set(projects.flatMap((p) => p.tags))].sort();
+
+function statusBadge(p: Project) {
+  if (p.status === "research")       return { label: "◆ research", cls: "text-primary" };
+  if (p.status === "in development") return { label: "◐ in dev",   cls: "text-amber-500" };
+  if (p.links.live)                  return { label: "● live",     cls: "text-emerald-500" };
+  if (p.links.github)                return { label: "⬡ public",   cls: "text-gray-400 dark:text-gray-500" };
+  return                                    { label: "⊘ private",  cls: "text-gray-300 dark:text-gray-600" };
+}
 ---
 
 <div id="projects-explorer">
@@ -64,12 +110,8 @@ const allTags  = [...new Set(projects.flatMap((p) => p.tags))].sort();
             <span class="text-sm font-semibold text-gray-800 dark:text-gray-100 group-hover:text-primary transition-colors duration-150">
               {project.name}
             </span>
-            <span class="ml-auto text-[11px] shrink-0">
-              {project.links.live
-                ? <span class="text-emerald-500">● live</span>
-                : project.links.github
-                ? <span class="text-gray-400 dark:text-gray-500">⬡ public</span>
-                : <span class="text-gray-300 dark:text-gray-600">⊘ private</span>}
+            <span class={`ml-auto text-[11px] shrink-0 ${statusBadge(project).cls}`}>
+              {statusBadge(project).label}
             </span>
           </div>
 
@@ -174,17 +216,26 @@ const allTags  = [...new Set(projects.flatMap((p) => p.tags))].sort();
           <!-- Stars + status -->
           <span class="ml-auto flex items-center gap-2 text-[11px] shrink-0">
             <span class="gh-stars" data-repo={project.name}></span>
-            {project.links.live
-              ? <span class="text-emerald-500">● live</span>
-              : project.links.github
-              ? <span class="text-gray-400 dark:text-gray-500">⬡ public</span>
-              : <span class="text-gray-300 dark:text-gray-600">⊘ private</span>}
+            <span class={statusBadge(project).cls}>{statusBadge(project).label}</span>
           </span>
         </button>
 
         <!-- Expanded detail -->
         <div class="project-detail hidden ml-4 pl-3 border-l border-gray-200 dark:border-gray-700 py-3 pr-1">
           <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-3">{project.description}</p>
+
+          <!-- Highlights -->
+          {project.highlights && project.highlights.length > 0 && (
+            <ul class="space-y-1.5 mb-3">
+              {project.highlights.map((h) => (
+                <li class="flex gap-2 text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
+                  <span class="text-primary shrink-0 mt-px">›</span>
+                  <span>{h}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+
 
           <!-- GitHub meta: skeleton → data -->
           <div class="gh-meta mb-3" data-repo={project.name}>
@@ -223,7 +274,16 @@ const allTags  = [...new Set(projects.flatMap((p) => p.tags))].sort();
                 Live
               </a>
             )}
-            {!project.links.github && !project.links.live && (
+            {project.links.paper && (
+              <a href={project.links.paper} target="_blank" rel="noopener noreferrer"
+                class="flex items-center gap-1.5 text-xs px-3 py-1.5 border border-gray-200 dark:border-gray-600 rounded hover:border-primary hover:text-primary transition-colors duration-150">
+                <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>
+                </svg>
+                Paper
+              </a>
+            )}
+            {!project.links.github && !project.links.live && !project.links.paper && (
               <span class="flex items-center gap-1.5 text-xs text-gray-400 dark:text-gray-500">
                 <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
