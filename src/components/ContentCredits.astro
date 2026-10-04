@@ -1,0 +1,149 @@
+---
+import pkg from "../../package.json";
+// Rendered verbatim so the notice always matches the repo's LICENSE.md
+import licenseText from "../../LICENSE.md?raw";
+
+// Strip semver range prefixes (^, ~) for display
+const v = (name: string) =>
+  ((pkg.dependencies as Record<string, string>)[name] ??
+    (pkg.devDependencies as Record<string, string>)[name] ??
+    "").replace(/^[\^~]/, "");
+
+const app = {
+  name: "portfolio-v3.0",
+  version: pkg.version,
+  author: "Paul Kaizirege",
+  repo: "https://github.com/kaizipaul/portfolio-v3.0",
+  year: new Date().getFullYear(),
+};
+
+const original = {
+  project: "astro-developer-portfolio",
+  author: "Dejan Vintonjiv",
+  repo: "https://github.com/devidevio/astro-developer-portfolio",
+  site: "https://devidev.io",
+  license: "MIT-based",
+};
+
+const stack = [
+  { name: "Astro", version: v("astro"), href: "https://astro.build" },
+  { name: "TailwindCSS", version: v("tailwindcss"), href: "https://tailwindcss.com" },
+  { name: "Bun", version: "", href: "https://bun.sh" },
+  { name: "Vercel", version: "", href: "https://vercel.com" },
+];
+
+const thirdParty = [
+  { name: "JetBrains Mono", role: "typeface", href: "https://www.jetbrains.com/lp/mono/" },
+  { name: "Lucide", role: "icons", href: "https://lucide.dev" },
+  { name: "Simple Icons", role: "brand icons", href: "https://simpleicons.org" },
+  { name: "Shiki", role: "syntax highlighting", href: "https://shiki.style" },
+  { name: "GitHub REST API", role: "profile stats", href: "https://docs.github.com/en/rest" },
+  { name: "Spotify Web API", role: "now playing", href: "https://developer.spotify.com/documentation/web-api" },
+];
+
+const heading = "flex items-center gap-2 mb-4 text-[11px] font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500 select-none";
+const link = "text-primary hover:underline underline-offset-2";
+---
+
+<div class="space-y-8 text-xs">
+
+  <!-- App header, "About this app" style -->
+  <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+    <div class="flex items-center justify-center w-14 h-14 shrink-0 rounded-xl border-2 border-primary text-primary text-lg font-extrabold select-none">
+      {"</>"}
+    </div>
+    <div class="space-y-1">
+      <h3 class="text-base font-bold text-gray-800 dark:text-gray-100">{app.name}</h3>
+      <p class="text-gray-400 dark:text-gray-500">
+        version <span class="text-gray-600 dark:text-gray-300">{app.version}</span>
+        <span class="text-gray-300 dark:text-gray-600 mx-1">·</span>
+        © {app.year} {app.author}
+      </p>
+      <a href={app.repo} target="_blank" rel="noopener noreferrer" class={link}>
+        {app.repo.replace("https://", "")}
+      </a>
+    </div>
+  </div>
+
+  <div class="border-t border-gray-200 dark:border-gray-700"></div>
+
+  <!-- Original creator -->
+  <div>
+    <div class={heading}>
+      <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+      </svg>
+      <span>Original work</span>
+    </div>
+
+    <div class="rounded-lg border border-gray-200 dark:border-gray-600 p-4 space-y-3">
+      <p class="text-gray-500 dark:text-gray-400 leading-relaxed">
+        This site is a fork of
+        <a href={original.repo} target="_blank" rel="noopener noreferrer" class={link}>{original.project}</a>
+        by <span class="font-semibold text-gray-800 dark:text-gray-100">{original.author}</span>.
+        The VS Code-style layout, tabbed content and terminal aesthetic all started there —
+        huge thanks for open-sourcing it.
+      </p>
+      <div class="flex flex-wrap gap-2">
+        <a href={original.repo} target="_blank" rel="noopener noreferrer"
+          class="border rounded px-2 py-1 border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:text-primary hover:border-primary transition-colors duration-150">
+          GitHub ↗
+        </a>
+        <a href={original.site} target="_blank" rel="noopener noreferrer"
+          class="border rounded px-2 py-1 border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:text-primary hover:border-primary transition-colors duration-150">
+          devidev.io ↗
+        </a>
+        <span class="border rounded px-2 py-1 border-primary/40 text-primary">{original.license} license</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Built with -->
+  <div>
+    <div class={heading}>
+      <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m16 18 6-6-6-6"/><path d="m8 6-6 6 6 6"/>
+      </svg>
+      <span>Built with</span>
+    </div>
+    <div class="flex flex-wrap gap-2">
+      {stack.map((s) => (
+        <a href={s.href} target="_blank" rel="noopener noreferrer"
+          class="border rounded px-2 py-1 border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:text-primary hover:border-primary transition-colors duration-150">
+          {s.name}{s.version && <span class="text-gray-400 dark:text-gray-500"> {s.version}</span>}
+        </a>
+      ))}
+    </div>
+  </div>
+
+  <!-- Third-party -->
+  <div>
+    <div class={heading}>
+      <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M16.5 9.4 7.55 4.24"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M3.29 7 12 12l8.71-5"/><path d="M12 22V12"/>
+      </svg>
+      <span>Third-party</span>
+    </div>
+    <ul class="space-y-1.5">
+      {thirdParty.map((t) => (
+        <li class="flex gap-2 text-gray-500 dark:text-gray-400">
+          <span class="text-primary shrink-0">›</span>
+          <a href={t.href} target="_blank" rel="noopener noreferrer" class="text-gray-700 dark:text-gray-200 hover:text-primary transition-colors duration-150">{t.name}</a>
+          <span class="text-gray-400 dark:text-gray-500">— {t.role}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <!-- License notice (the original license requires it in all copies) -->
+  <div>
+    <div class={heading}>
+      <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/>
+      </svg>
+      <span>License</span>
+    </div>
+    <pre class="whitespace-pre-wrap rounded-lg bg-gray-50 dark:bg-gray-900/60 border border-gray-200 dark:border-gray-600 p-4 text-[11px] leading-relaxed text-gray-500 dark:text-gray-400">{licenseText.replaceAll("**", "")}</pre>
+  </div>
+
+</div>

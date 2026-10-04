@@ -9,16 +9,17 @@ import ContentCode from "../components/ContentAbout.astro";
 import ContentProjects from "../components/ContentProjects.astro";
 import ContentSkills from "../components/ContentSkills.astro";
 import ContentExperience from "../components/ContentExperience.astro";
+import ContentCredits from "../components/ContentCredits.astro";
 ---
 
 <Layout>
   <!-- Start: Main Wrapper -->
   <main
-    class="flex flex-col md:flex-row w-full max-w-full md:max-w-7xl border border-gray-200 dark:border-gray-600 rounded-2xl overflow-hidden shadow-2xl relative bg-white dark:bg-black mb-12 md:mb-4"
+    class="flex flex-col md:flex-row w-full max-w-full lg:max-w-[96vw] xl:max-w-[1480px] 2xl:max-w-[1720px] border border-gray-200 dark:border-gray-600 rounded-2xl overflow-hidden shadow-2xl relative bg-white dark:bg-black mb-12 md:mb-4"
   >
     <!-- Start: Left / upper card -->
     <div
-      class="p-8 md:p-6 flex flex-col justify-between w-full md:w-2/5 border-b md:border-b-0 md:border-r border-gray-200 dark:border-gray-600"
+      class="p-8 md:p-6 flex flex-col justify-between w-full md:w-2/5 lg:w-1/3 2xl:w-[28%] md:shrink-0 border-b md:border-b-0 md:border-r border-gray-200 dark:border-gray-600"
     >
       <Profile />
 
@@ -26,10 +27,10 @@ import ContentExperience from "../components/ContentExperience.astro";
     </div>
     <!-- End: Left / upper card -->
 
-    <!-- Start: Right / lower card (yes 4/5 instead of 3/5) -->
-    <div class="w-full md:w-4/5 p-0">
+    <!-- Start: Right / lower card (takes remaining width) -->
+    <div class="w-full md:flex-1 min-w-0 p-0">
       <!-- Start: Inner wrapper -->
-      <div class="min-h-full flex flex-col md:h-[90vh] md:overflow-y-scroll">
+      <div class="min-h-full flex flex-col md:h-[93vh] 2xl:h-[92vh] md:overflow-y-scroll">
         <!-- Use hidden radio buttons to control the tabs -->
         <div class="tab-controls">
           <input type="radio" id="tab1" name="tabs" class="tab-radio" checked />
@@ -39,6 +40,8 @@ import ContentExperience from "../components/ContentExperience.astro";
           <input type="radio" id="tab3" name="tabs" class="tab-radio" />
 
           <input type="radio" id="tab4" name="tabs" class="tab-radio" />
+
+          <input type="radio" id="tab5" name="tabs" class="tab-radio" />
 
           <!-- Start: Tab bar -->
           <div class="flex bg-white dark:bg-black border-b border-gray-200 dark:border-gray-600 sticky top-0 z-10">
@@ -50,6 +53,8 @@ import ContentExperience from "../components/ContentExperience.astro";
               <ContentLink contentId="tab3" contentName="skills.json" />
 
               <ContentLink contentId="tab4" contentName="experience.md" />
+
+              <ContentLink contentId="tab5" contentName="credits.md" />
             </div>
 
             <!-- Theme toggle -->
@@ -96,6 +101,12 @@ import ContentExperience from "../components/ContentExperience.astro";
               <ContentExperience />
             </div>
             <!-- End: Experience content -->
+
+            <!-- Start: Credits content -->
+            <div id="content5" class="tab-content">
+              <ContentCredits />
+            </div>
+            <!-- End: Credits content -->
           </div>
           <!-- End: Tab content -->
         </div>
@@ -160,6 +171,15 @@ import ContentExperience from "../components/ContentExperience.astro";
   }
 
   #tab4:checked ~ .flex [for="tab4"] {
+    @apply border-b-2 border-b-primary;
+  }
+
+  /* When tab5 is checked, show content5 and highlight its tab */
+  #tab5:checked ~ * #content5 {
+    @apply block opacity-100;
+  }
+
+  #tab5:checked ~ .flex [for="tab5"] {
     @apply border-b-2 border-b-primary;
   }
 </style>
