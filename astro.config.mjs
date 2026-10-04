@@ -1,4 +1,6 @@
-import { defineConfig } from 'astro/config';
+import { defineConfig, envField } from 'astro/config';
+
+import vercel from '@astrojs/vercel';
 
 import tailwind from '@astrojs/tailwind';
 import compress from 'astro-compress';
@@ -21,8 +23,18 @@ export default defineConfig({
 
 
     output: 'static',
+    // Static by default; routes with `prerender = false` (e.g. /api/now-playing) run on Vercel functions
+    adapter: vercel(),
     trailingSlash: 'always',
     site: 'https://devidev.io',
+
+    env: {
+        schema: {
+            SPOTIFY_CLIENT_ID: envField.string({ context: 'server', access: 'secret', optional: true }),
+            SPOTIFY_CLIENT_SECRET: envField.string({ context: 'server', access: 'secret', optional: true }),
+            SPOTIFY_REFRESH_TOKEN: envField.string({ context: 'server', access: 'secret', optional: true }),
+        },
+    },
 
     // Single page, no prefetch needed
     prefetch: false,

@@ -26,3 +26,5 @@ pnpm-debug.log*
 .wrangler/
 .vscode/
 package-lock.json
+# vercel build output
+.vercel/
