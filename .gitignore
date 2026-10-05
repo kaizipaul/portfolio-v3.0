@@ -28,3 +28,5 @@ pnpm-debug.log*
 package-lock.json
 # vercel build output
 .vercel/
+.vercel
+.env*.local
