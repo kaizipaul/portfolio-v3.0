@@ -26,7 +26,7 @@ export default defineConfig({
     // Static by default; routes with `prerender = false` (e.g. /api/now-playing) run on Vercel functions
     adapter: vercel(),
     trailingSlash: 'always',
-    site: 'https://devidev.io',
+    site: 'https://portfolio-v3-0-plum.vercel.app',
 
     env: {
         schema: {
