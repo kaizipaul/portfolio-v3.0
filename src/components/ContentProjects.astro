@@ -55,6 +55,18 @@ const projects: Project[] = [
     links: { github: "https://github.com/kaizipaul/portfolio-v3.0", live: "https://devidev.io" },
   },
   {
+    name: "space-travelers-hub",
+    description: "Reserve SpaceX rockets, join space missions and count down to the next launches. Built as a pair-programming project, then redesigned with a dark console aesthetic and live Launch Library 2 data.",
+    tags: ["React", "Redux", "Tailwind CSS", "Vite"],
+    highlights: [
+      "Reservations persist across reloads, with toast feedback and a launch animation.",
+      "Upcoming launches page with a live ticking countdown to the next liftoff.",
+      "Skeleton loaders, request timeouts, caching and a retry screen when an API fails.",
+      "Responsive layout with an icon bottom navigation on mobile; deployed on Vercel.",
+    ],
+    links: { github: "https://github.com/kaizipaul/Space-Travelers-Hub", live: "https://space-travelers-hub-taupe.vercel.app/" },
+  },
+  {
     name: "portfolio-v2.0",
     description: "Minimalistic portfolio site built on a NextJS template with MDX plugin support for markdown-driven content.",
     tags: ["Next.js", "TypeScript", "MDX"],
@@ -408,11 +420,11 @@ function statusBadge(p: Project) {
       if (!res.ok) { clearSkeletons(); return; }
 
       const repos: { name: string; language: string | null; stargazers_count: number; forks_count: number; pushed_at: string }[] = await res.json();
-      const repoMap = new Map(repos.map((r) => [r.name, r]));
+      const repoMap = new Map(repos.map((r) => [r.name.toLowerCase(), r]));
 
       // Populate .gh-meta containers (pinned cards + expanded details)
       document.querySelectorAll<HTMLElement>('.gh-meta').forEach((el) => {
-        const repo = repoMap.get(el.dataset.repo ?? '');
+        const repo = repoMap.get((el.dataset.repo ?? '').toLowerCase());
         if (repo) {
           el.innerHTML = metaHtml(repo);
         } else {
@@ -422,7 +434,7 @@ function statusBadge(p: Project) {
 
       // Populate language dots in collapsed rows
       document.querySelectorAll<HTMLElement>('.gh-lang-dot').forEach((el) => {
-        const repo = repoMap.get(el.dataset.repo ?? '');
+        const repo = repoMap.get((el.dataset.repo ?? '').toLowerCase());
         if (repo?.language) {
           const color = LANG_COLORS[repo.language] ?? '#6A737D';
           el.innerHTML = `<span class="w-2 h-2 rounded-full shrink-0 block" style="background:${color}"></span>`;
@@ -431,7 +443,7 @@ function statusBadge(p: Project) {
 
       // Populate star counts in collapsed rows
       document.querySelectorAll<HTMLElement>('.gh-stars').forEach((el) => {
-        const repo = repoMap.get(el.dataset.repo ?? '');
+        const repo = repoMap.get((el.dataset.repo ?? '').toLowerCase());
         if (repo && repo.stargazers_count > 0) {
           el.innerHTML = `<span class="flex items-center gap-0.5 text-gray-400 dark:text-gray-500">
             <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="currentColor" style="color:#F43F5E;opacity:.6">
