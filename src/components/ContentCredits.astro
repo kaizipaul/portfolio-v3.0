@@ -65,7 +65,7 @@ const link = "text-primary hover:underline underline-offset-2";
     </div>
   </div>
 
-  <div class="border-t border-gray-200 dark:border-gray-700"></div>
+  <div class="border-t border-console-line"></div>
 
   <!-- Original creator -->
   <div>
@@ -76,7 +76,7 @@ const link = "text-primary hover:underline underline-offset-2";
       <span>Original work</span>
     </div>
 
-    <div class="rounded-lg border border-gray-200 dark:border-gray-600 p-4 space-y-3">
+    <div class="rounded-lg border border-console-line p-4 space-y-3">
       <p class="text-gray-500 dark:text-gray-400 leading-relaxed">
         This site is a fork of
         <a href={original.repo} target="_blank" rel="noopener noreferrer" class={link}>{original.project}</a>
@@ -86,11 +86,11 @@ const link = "text-primary hover:underline underline-offset-2";
       </p>
       <div class="flex flex-wrap gap-2">
         <a href={original.repo} target="_blank" rel="noopener noreferrer"
-          class="border rounded px-2 py-1 border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:text-primary hover:border-primary transition-colors duration-150">
+          class="border rounded px-2 py-1 border-console-line text-gray-600 dark:text-gray-300 hover:text-primary hover:border-primary transition-colors duration-150">
           GitHub ↗
         </a>
         <a href={original.site} target="_blank" rel="noopener noreferrer"
-          class="border rounded px-2 py-1 border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:text-primary hover:border-primary transition-colors duration-150">
+          class="border rounded px-2 py-1 border-console-line text-gray-600 dark:text-gray-300 hover:text-primary hover:border-primary transition-colors duration-150">
           devidev.io ↗
         </a>
         <span class="border rounded px-2 py-1 border-primary/40 text-primary">{original.license} license</span>
@@ -109,7 +109,7 @@ const link = "text-primary hover:underline underline-offset-2";
     <div class="flex flex-wrap gap-2">
       {stack.map((s) => (
         <a href={s.href} target="_blank" rel="noopener noreferrer"
-          class="border rounded px-2 py-1 border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:text-primary hover:border-primary transition-colors duration-150">
+          class="border rounded px-2 py-1 border-console-line text-gray-600 dark:text-gray-300 hover:text-primary hover:border-primary transition-colors duration-150">
           {s.name}{s.version && <span class="text-gray-400 dark:text-gray-500"> {s.version}</span>}
         </a>
       ))}
@@ -143,7 +143,7 @@ const link = "text-primary hover:underline underline-offset-2";
       </svg>
       <span>License</span>
     </div>
-    <pre class="whitespace-pre-wrap rounded-lg bg-gray-50 dark:bg-gray-900/60 border border-gray-200 dark:border-gray-600 p-4 text-[11px] leading-relaxed text-gray-500 dark:text-gray-400">{licenseText.replaceAll("**", "")}</pre>
+    <pre class="whitespace-pre-wrap rounded-lg bg-console-panel border border-console-line p-4 text-[11px] leading-relaxed text-gray-500 dark:text-gray-400">{licenseText.replaceAll("**", "")}</pre>
   </div>
 
 </div>

@@ -92,9 +92,9 @@ const education: Entry[] = [
 const tagColor: Record<string, string> = {
   work:      "text-primary border-primary/40",
   contract:  "text-primary border-primary/40",
-  volunteer: "text-gray-400 dark:text-gray-500 border-gray-300 dark:border-gray-600",
+  volunteer: "text-gray-400 dark:text-gray-500 border-console-line",
   ongoing:   "text-emerald-500 border-emerald-500/40",
-  completed: "text-gray-400 dark:text-gray-500 border-gray-300 dark:border-gray-600",
+  completed: "text-gray-400 dark:text-gray-500 border-console-line",
 };
 ---
 
@@ -117,7 +117,7 @@ const tagColor: Record<string, string> = {
       {experience.map((entry, i) => (
         <div class={`relative pl-6 ${i < experience.length - 1 ? 'pb-7' : ''}`}>
           <!-- Timeline dot -->
-          <div class="absolute left-0 top-1.5 -translate-x-1/2 w-2.5 h-2.5 rounded-full border-2 border-primary bg-white dark:bg-black"></div>
+          <div class="absolute left-0 top-1.5 -translate-x-1/2 w-2.5 h-2.5 rounded-full border-2 border-primary bg-console-bg"></div>
 
           <!-- Role + tag -->
           <div class="flex flex-wrap items-center gap-2 mb-0.5">
@@ -153,7 +153,7 @@ const tagColor: Record<string, string> = {
   </div>
 
   <!-- Divider -->
-  <div class="border-t border-gray-200 dark:border-gray-700"></div>
+  <div class="border-t border-console-line"></div>
 
   <!-- Education section -->
   <div>
@@ -172,7 +172,7 @@ const tagColor: Record<string, string> = {
       {education.map((entry, i) => (
         <div class={`relative pl-6 ${i < education.length - 1 ? 'pb-7' : ''}`}>
           <!-- Timeline dot: hollow for completed, filled for ongoing -->
-          <div class={`absolute left-0 top-1.5 -translate-x-1/2 w-2.5 h-2.5 rounded-full border-2 ${entry.current ? 'border-emerald-500 bg-emerald-500' : 'border-gray-400 dark:border-gray-600 bg-white dark:bg-black'}`}></div>
+          <div class={`absolute left-0 top-1.5 -translate-x-1/2 w-2.5 h-2.5 rounded-full border-2 ${entry.current ? 'border-emerald-500 bg-emerald-500' : 'border-gray-400 dark:border-console-line bg-console-bg'}`}></div>
 
           <!-- Degree + tag -->
           <div class="flex flex-wrap items-center gap-2 mb-0.5">
